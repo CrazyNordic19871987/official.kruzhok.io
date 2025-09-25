@@ -285,12 +285,19 @@
                 const card = document.createElement('div');
                 card.className = 'place-card';
                 card.innerHTML = `
-                    <h3>${circle.Name || 'Без названия'}</h3>
-                    <p><strong>Направление:</strong> ${circle.Category || 'Не указано'}</p>
-                    <p><strong>Возраст:</strong> ${circle.AgeMin || '?'}-${circle.AgeMax || '?'} лет</p>
-                    <p><strong>Адрес:</strong> ${circle.Address || 'Не указан'}</p>
-                    <button onclick="openCircleDetail('${circle.id}', '${circle.Name}')">Записаться на пробное</button>
-                `;
+    <div class="place-image">
+        ${circle.Name || 'Кружок'} <!-- Это временная заглушка -->
+    </div>
+    <div class="place-content">
+        <h3>${circle.Name || 'Без названия'}</h3>
+        <div class="place-meta">
+            <p><strong>Направление:</strong> ${circle.Category || 'Не указано'}</p>
+            <p><strong>Возраст:</strong> ${circle.AgeMin || '?'}-${circle.AgeMax || '?'} лет</p>
+            <p><strong>Адрес:</strong> ${circle.Address || 'Не указан'}</p>
+        </div>
+        <button onclick="openCircleDetail('${circle.id}', '${circle.Name}')">Записаться на пробное</button>
+    </div>
+`;
                 resultsList.appendChild(card);
             });
         }
