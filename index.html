@@ -300,9 +300,9 @@
                 card.innerHTML = `
     <div class="place-image">
         ${circle.Image && circle.Image.length > 0 
-            ? `<img src="${circle.Image[0].url}" alt="${circle.Name}" style="width:100%; height:100%; object-fit:cover;">`
-            : circle.Name || 'Кружок'
-        }
+    ? `<img src="${circle.Image[0].url}" alt="${circle.Name}" style="width:100%; height:100%; object-fit:cover;">`
+    : circle.Name || 'Кружок'
+}
     </div>
     <div class="place-content">
         <h3>${circle.Name || 'Без названия'}</h3>
