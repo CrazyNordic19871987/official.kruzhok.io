@@ -3,401 +3,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кружок.OK - Найди кружки для ребенка в Москве</title>
+    <title>Кружок.OK - Отзывы и рейтинги детских кружков Москвы</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍🎓</text></svg>">
-    <!-- Книга -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-
-<!-- Мозг -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
-
-<!-- Палитра -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
-
-<!-- Робот -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    
     <style>
-        /* Сброс стандартных отступов и шрифтов */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* Подключаем современные шрифты (как у Universe) */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: #ffffff; /* Белый фон вместо серого */
-        color: #1a1a1a; /* Глубокий черный для текста */
-        line-height: 1.5;
-    }
-
-    /* Хедер как у Universe - светлый, с тонкой границей */
-    header {
-        background-color: #fff;
-        border-bottom: 1px solid #eaeaea;
-        padding: 1.5rem 1rem;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-
-    h1 {
-        font-weight: 700;
-        font-size: 1.8rem;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #4F46E5, #7E22CE); /* Красивый градиент */
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    /* Поисковая строка - более воздушная */
-    .search-bar {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        max-width: 800px;
-        margin: 0 auto;
-        flex-wrap: wrap;
-    }
-
-    .search-bar input, .search-bar select {
-        padding: 12px 16px;
-        border: 1px solid #e1e5e9;
-        border-radius: 12px; /* Скругленные углы как у Universe */
-        font-size: 1rem;
-        flex: 1;
-        min-width: 200px;
-        transition: all 0.2s ease;
-    }
-
-    .search-bar input:focus, .search-bar select:focus {
-        outline: none;
-        border-color: #4F46E5;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-
-    .search-bar button {
-        padding: 12px 24px;
-        background: #4F46E5;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s ease;
-    }
-
-    .search-bar button:hover {
-        background: #4338CA;
-    }
-
-    /* Карта занимает больше места */
-    #map {
-        width: 100%;
-        height: 50vh; /* 50% высоты экрана */
-        min-height: 400px;
-        border-radius: 0 0 16px 16px;
-    }
-
-    /* Контейнер результатов */
-    .results-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
-
-    .results-container h2 {
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        font-size: 1.4rem;
-    }
-
-    /* СЕТКА КАРТОЧЕК - КАК У UNIVERSE */
-    .results-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 24px;
-    }
-
-    /* КАРТОЧКА - ОСНОВНОЕ ИЗМЕНЕНИЕ */
-    .place-card {
-        background: white;
-        border-radius: 16px; /* Большое скругление */
-        overflow: hidden; /* Чтобы скругления работали */
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06); /* Тонкая, легкая тень */
-        border: 1px solid #f0f0f0;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .place-card:hover {
-        transform: translateY(-4px); /* Эффект поднятия */
-        box-shadow: 0 8px 25px rgba(0,0,0,0.12); /* Усиленная тень при наведении */
-    }
-
-    /* Место для картинки (пока заглушка) */
-    .place-image {
-    width: 100%;
-    height: 180px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    overflow: hidden; /* Добавьте эту строку */
-}
-
-    .place-content {
-        padding: 1.5rem;
-    }
-
-    /* From Uiverse.io by narmesh_sah */ 
-.button {
-  cursor: pointer;
-  position: relative;
-  width: 102px;
-  height: 195px;
-  border: none;
-  border-radius: 0 9.5rem 10rem 0;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-}
-
-.button.face {
-  transform: rotateY(180deg);
-}
-
-.wolverine-face {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 85px;
-  height: 170px;
-  left: 0;
-  border: none;
-  border-radius: 0 9.5rem 10rem 0;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0);
-  background: linear-gradient(
-    90deg,
-    #fce620 5%,
-    #ebd61d 10%,
-    #f5e024 30%,
-    #e6d31d 50%,
-    #f5e024 70%,
-    #ebd61d 80%,
-    #fce620 95%
-  );
-  transition: all 0.5s ease;
-}
-
-.wol {
-  position: absolute;
-  border: none;
-  background-color: transparent;
-  box-shadow: none;
-  width: 130px;
-  height: 190px;
-  bottom: 15px;
-  right: -30px;
-  transition: all 0.5s ease;
-  clip-path: polygon(
-    98% 1%,
-    85% 15%,
-    73% 28%,
-    61% 38%,
-    49% 46%,
-    35% 50%,
-    23% 54%,
-    15% 57%,
-    10% 66%,
-    13% 78%,
-    21% 86%,
-    32% 87%,
-    54% 83%,
-    42% 100%,
-    62% 89%,
-    73% 85%,
-    81% 73%,
-    85% 63%,
-    90% 40%,
-    93% 28%
-  );
-}
-
-.wol-eye {
-  position: absolute;
-  border: none;
-  background-color: #090b0c;
-  box-shadow: none;
-  width: 45px;
-  height: 35px;
-  transition: all 0.5s ease;
-  clip-path: polygon(
-    1% 1%,
-    99% 59%,
-    91% 73%,
-    85% 81%,
-    77% 89%,
-    71% 94%,
-    65% 98%,
-    58% 99%,
-    52% 99%,
-    44% 98%,
-    38% 97%,
-    33% 92%,
-    28% 85%,
-    23% 75%
-  );
-  transform: rotateY(180deg);
-}
-
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-}
-
-.btn:hover .button {
-  background: linear-gradient(
-    90deg,
-    #fce620 5%,
-    #ebd61d 10%,
-    #f5e024 30%,
-    #e6d31d 50%,
-    #f5e024 70%,
-    #ebd61d 80%,
-    #fce620 95%
-  );
-  box-shadow: 0px 0px 5px #feff1e;
-}
-
-.btn:hover .wolverine-face {
-  background: purple;
-  left: 16px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0);
-}
-
-.btn:hover .wol {
-  background-color: #090b0c;
-  width: 130px;
-  height: 190px;
-  bottom: 15px;
-  right: -35px;
-  transform: rotateY(0deg);
-  clip-path: polygon(
-    98% 1%,
-    85% 15%,
-    73% 28%,
-    61% 38%,
-    49% 46%,
-    35% 50%,
-    23% 54%,
-    15% 57%,
-    10% 66%,
-    13% 78%,
-    21% 86%,
-    32% 87%,
-    54% 83%,
-    42% 100%,
-    62% 89%,
-    73% 85%,
-    81% 73%,
-    85% 63%,
-    90% 40%,
-    93% 28%
-  );
-}
-
-.btn:hover .wol-eye {
-  background-color: #ececec;
-}
-
-.btn:active .button:not(:hover) {
-  filter: grayscale(1);
-}
-
-.btn:active .button:hover {
-  transform: scale(1.1);
-}
-
-.btn:active .face:hover {
-  transform: rotateY(180deg) scale(1.1);
-}
-
-    }
-
-    .place-meta {
-        color: #64748b; /* Серый текст для мета-инфо */
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        line-height: 1.4;
-    }
-
-    /* Кнопка - более современная */
-    .place-card button {
-        width: 100%;
-        padding: 12px;
-        background: #f8fafc;
-        color: #4F46E5;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .place-card button:hover {
-        background: #4F46E5;
-        color: white;
-    }
-
-    /* Адаптивность для мобильных */
-    @media (max-width: 768px) {
-        .search-bar { flex-direction: column; }
-        .search-bar input, .search-bar select { min-width: auto; }
-        .results-list { grid-template-columns: 1fr; }
-        #map { height: 40vh; }
-    }
-</style>
+        /* TripAdvisor-inspired styles */
+        :root {
+            --green-primary: #34E0A1;
+            --green-dark: #00A870;
+            --green-light: #E8F8F1;
+            --gray-dark: #2D2D2D;
+            --gray-medium: #585858;
+            --gray-light: #F5F5F5;
+            --white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--white);
+            color: var(--gray-dark);
+            line-height: 1.4;
+        }
+        
+        /* Header - TripAdvisor style */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--green-dark);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--gray-dark);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--green-light) 0%, #ffffff 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--gray-dark);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray-medium);
+            margin-bottom: 2rem;
+        }
+        
+        /* Search Bar - TripAdvisor style */
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .search-input {
+            position: relative;
+        }
+        
+        .search-input input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--green-primary);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-medium);
+        }
+        
+        .filter-select {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--white);
+        }
+        
+        .search-btn {
+            background: var(--green-primary);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-btn:hover {
+            background: var(--green-dark);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        /* Results Section */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .results-count {
+            font-size: 1.2rem;
+            color: var(--gray-medium);
+        }
+        
+        .sort-select {
+            padding: 0.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        
+        /* Place Cards - TripAdvisor style */
+        .place-card {
+            background: var(--white);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+        
+        .place-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        .place-card-content {
+            display: grid;
+            grid-template-columns: 200px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+        
+        .place-image {
+            width: 200px;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .place-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .place-info {
+            flex: 1;
+        }
+        
+        .place-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--gray-dark);
+        }
+        
+        /* Rating Stars - TripAdvisor style */
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stars {
+            color: var(--green-primary);
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .rating-score {
+            background: var(--green-dark);
+            color: var(--white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .reviews-count {
+            color: var(--gray-medium);
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        .place-meta {
+            color: var(--gray-medium);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .place-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-tag {
+            background: var(--green-light);
+            color: var(--green-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .place-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--green-primary);
+            color: var(--white);
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--green-dark);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--green-dark);
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--green-primary);
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--green-light);
+        }
+        
+        .place-price {
+            text-align: right;
+            min-width: 120px;
+        }
+        
+        .price-from {
+            color: var(--gray-medium);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .price-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--green-dark);
+        }
+        
+        .price-period {
+            color: var(--gray-medium);
+            font-size: 0.9rem;
+        }
+        
+        /* Map Sidebar */
+        .map-sidebar {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+        }
+        
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        
+        .map-legend {
+            background: var(--gray-light);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .place-card-content {
+                grid-template-columns: 150px 1fr;
+            }
+            
+            .place-price {
+                grid-column: 1 / -1;
+                text-align: left;
+                margin-top: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .search-bar {
+                grid-template-columns: 1fr;
+            }
+            
+            .place-card-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .place-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+    
     <script src="https://api-maps.yandex.ru/2.1/?apikey=73a4825a-3afa-47c2-9241-df3665eaa73f&lang=ru_RU" type="text/javascript"></script>
 </head>
 <body>
-    <header>
-        <h1>Кружок.OK</h1>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Например, робототехника...">
-            <select id="categoryFilter">
-                <option value="">Все направления</option>
-                <option value="Техническое">Техническое</option>
-                <option value="Творческое">Творческое</option>
-                <option value="Спортивное">Спортивное</option>
-                <option value="Научное">Научное</option>
-                <option value="Языковое">Языковое</option>
-            </select>
-            <button onclick="performSearch()">Найти</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">Кружок<span>.OK</span></a>
+            <nav>
+                <button class="btn-secondary">Для организаторов</button>
+            </nav>
         </div>
     </header>
 
-    <main>
-        <div id="map"></div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Найдите лучшие кружки для вашего ребенка</h1>
+        <p>Честные отзывы, рейтинги и бронирование в один клик</p>
         
-        <div class="results-container">
-            <h2>Найдено кружков: <span id="resultsCount">0</span></h2>
-            <div id="resultsList" class="results-list"></div>
+        <div class="search-container">
+            <div class="search-bar">
+                <div class="search-input">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Кружки, секции, занятия...">
+                </div>
+                
+                <select class="filter-select" id="categoryFilter">
+                    <option value="">Все направления</option>
+                    <option value="Техническое">Техническое</option>
+                    <option value="Творческое">Творческое</option>
+                    <option value="Спортивное">Спортивное</option>
+                    <option value="Научное">Научное</option>
+                    <option value="Языковое">Языковое</option>
+                </select>
+                
+                <select class="filter-select" id="ageFilter">
+                    <option value="">Любой возраст</option>
+                    <option value="3-5">3-5 лет</option>
+                    <option value="6-8">6-8 лет</option>
+                    <option value="9-12">9-12 лет</option>
+                    <option value="13-17">13-17 лет</option>
+                </select>
+                
+                <button class="search-btn" onclick="performSearch()">Найти</button>
+            </div>
         </div>
-    </main>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Results Column -->
+        <main class="results-column">
+            <div class="results-header">
+                <div class="results-count">Найдено кружков: <span id="resultsCount">0</span></div>
+                <select class="sort-select" id="sortSelect" onchange="performSearch()">
+                    <option value="rating">По рейтингу</option>
+                    <option value="name">По названию</option>
+                    <option value="price">По цене</option>
+                </select>
+            </div>
+            
+            <div id="resultsList" class="results-list">
+                <!-- Results will be loaded here -->
+            </div>
+        </main>
+        
+        <!-- Map Sidebar -->
+        <aside class="map-sidebar">
+            <div id="map"></div>
+            <div class="map-legend">
+                <strong>Кружки на карте</strong>
+                <p>Используйте карту для поиска кружков рядом с вами</p>
+            </div>
+        </aside>
+    </div>
 
     <script>
-        // Конфигурация Airtable
+        // Конфигурация
         const AIRTABLE_API_KEY = 'patZudd3eZOcrhroz.b1307f7e37e3d583ff1750c59cc8291bfe3e9a8d2c1531d89350c38cee5a44ad';
-        const AIRTABLE_BASE_ID = 'app8oCy3oQts8aPk3';
+        const AIRTABLE_BASE_ID = 'app8oCy3oQts8aPk3/tblPOtAUk1RcutQmC/viwGqpQHfsVwqSc9A';
         const AIRTABLE_TABLE_NAME = 'Circles';
         const TALLY_FORM_URL = 'https://tally.so/r/mVg4Ol';
 
@@ -405,13 +477,21 @@
         let placemarks = [];
         let allCircles = [];
 
-        // Загрузка данных из Airtable
+        // Загрузка данных
         async function loadCirclesFromAirtable() {
             const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`;
             try {
-                const response = await fetch(url, { headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` } });
+                const response = await fetch(url, { 
+                    headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` } 
+                });
                 const data = await response.json();
-                return data.records.map(record => ({ id: record.id, ...record.fields }));
+                return data.records.map(record => ({ 
+                    id: record.id, 
+                    ...record.fields,
+                    rating: Math.random() * 2 + 3, // временный рейтинг
+                    reviews: Math.floor(Math.random() * 50) + 5, // временные отзывы
+                    price: Math.floor(Math.random() * 5000) + 2000 // временная цена
+                }));
             } catch (error) {
                 console.error('Ошибка загрузки данных:', error);
                 return [];
@@ -431,67 +511,147 @@
         }
 
         function createMap(center) {
-            map = new ymaps.Map('map', { center: center, zoom: 11 });
+            map = new ymaps.Map('map', { 
+                center: center, 
+                zoom: 11,
+                controls: ['zoomControl', 'fullscreenControl']
+            });
         }
 
         // Добавление меток на карту
         function addPlacemarks(circles) {
             placemarks.forEach(mark => map.geoObjects.remove(mark));
             placemarks = [];
+            
             circles.forEach(circle => {
                 if (circle.Lat && circle.Lon) {
                     const placemark = new ymaps.Placemark([circle.Lat, circle.Lon], {
-                        balloonContent: `<strong>${circle.Name}</strong><br>${circle.Address}`
+                        balloonContent: `
+                            <strong>${circle.Name}</strong><br>
+                            Рейтинг: ${circle.rating.toFixed(1)} ⭐<br>
+                            ${circle.Address}
+                        `
+                    }, {
+                        preset: 'islands#greenIcon'
                     });
+                    
                     placemarks.push(placemark);
                     map.geoObjects.add(placemark);
                 }
             });
-            if (placemarks.length > 0) map.setBounds(map.geoObjects.getBounds());
+            
+            if (placemarks.length > 0) {
+                map.setBounds(map.geoObjects.getBounds());
+            }
+        }
+
+        // Генерация звезд рейтинга
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) stars += '★';
+            if (hasHalfStar) stars += '½';
+            for (let i = stars.length; i < 5; i++) stars += '☆';
+            
+            return stars;
         }
 
         // Поиск и фильтрация
         function performSearch() {
             const searchText = document.getElementById('searchInput').value.toLowerCase();
             const category = document.getElementById('categoryFilter').value;
-            const filteredCircles = allCircles.filter(circle => {
-                const matchesSearch = circle.Name?.toLowerCase().includes(searchText) || circle.Description?.toLowerCase().includes(searchText);
+            const ageFilter = document.getElementById('ageFilter').value;
+            const sortBy = document.getElementById('sortSelect').value;
+            
+            let filteredCircles = allCircles.filter(circle => {
+                const matchesSearch = !searchText || 
+                    circle.Name?.toLowerCase().includes(searchText) || 
+                    circle.Description?.toLowerCase().includes(searchText);
+                
                 const matchesCategory = !category || circle.Category === category;
-                return matchesSearch && matchesCategory && circle.IsActive;
+                const matchesAge = !ageFilter || (
+                    circle.AgeMin >= parseInt(ageFilter.split('-')[0]) && 
+                    circle.AgeMax <= parseInt(ageFilter.split('-')[1])
+                );
+                
+                return matchesSearch && matchesCategory && matchesAge && circle.IsActive;
             });
+            
+            // Сортировка
+            filteredCircles.sort((a, b) => {
+                switch(sortBy) {
+                    case 'rating': return b.rating - a.rating;
+                    case 'price': return a.price - b.price;
+                    case 'name': return a.Name.localeCompare(b.Name);
+                    default: return 0;
+                }
+            });
+            
             displayCircles(filteredCircles);
         }
 
         // Отображение кружков
         function displayCircles(circles) {
-    document.getElementById('resultsCount').textContent = circles.length;
-    addPlacemarks(circles);
-    const resultsList = document.getElementById('resultsList');
-    resultsList.innerHTML = '';
-    
-    circles.forEach(circle => {
-        const card = document.createElement('div');
-        card.className = 'place-card';
-        card.innerHTML = `
-            <div class="place-image">
-                ${circle.Image && circle.Image.length > 0 
-                    ? `<img src="${circle.Image[0].url}" alt="${circle.Name}" style="width:100%; height:100%; object-fit:cover;">`
-                    : circle.Name || 'Кружок'
-                }
-            </div>
-            <div class="place-content">
-                <h3>${circle.Name || 'Без названия'}</h3>
-                <div class="place-meta">
-                    <p><strong>Направление:</strong> ${circle.Category || 'Не указано'}</p>
-                    <p><strong>Возраст:</strong> ${circle.AgeMin || '?'}-${circle.AgeMax || '?'} лет</p>
-                    <p><strong>Адрес:</strong> ${circle.Address || 'Не указан'}</p>
-                </div>
-                <button onclick="openCircleDetail('${circle.id}', '${circle.Name}')">Записаться на пробное</button>
-            </div>
-        `;
-        resultsList.appendChild(card);
-    });
-}
+            document.getElementById('resultsCount').textContent = circles.length;
+            addPlacemarks(circles);
+            
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+            
+            circles.forEach(circle => {
+                const card = document.createElement('div');
+                card.className = 'place-card';
+                
+                card.innerHTML = `
+                    <div class="place-card-content">
+                        <div class="place-image">
+                            ${circle.Image && circle.Image.length > 0 
+                                ? `<img src="${circle.Image[0].url}" alt="${circle.Name}">`
+                                : circle.Name || 'Кружок'
+                            }
+                        </div>
+                        
+                        <div class="place-info">
+                            <h3 class="place-title">${circle.Name || 'Без названия'}</h3>
+                            
+                            <div class="rating">
+                                <span class="stars">${generateStars(circle.rating)}</span>
+                                <span class="rating-score">${circle.rating.toFixed(1)}</span>
+                                <span class="reviews-count">${circle.reviews} отзывов</span>
+                            </div>
+                            
+                            <div class="place-meta">
+                                <p><strong>Направление:</strong> ${circle.Category || 'Не указано'}</p>
+                                <p><strong>Возраст:</strong> ${circle.AgeMin || '?'}-${circle.AgeMax || '?'} лет</p>
+                                <p><strong>Адрес:</strong> ${circle.Address || 'Не указан'}</p>
+                            </div>
+                            
+                            <div class="place-features">
+                                <span class="feature-tag">Группы до 8 человек</span>
+                                <span class="feature-tag">Пробный урок</span>
+                                <span class="feature-tag">Сертифицированные педагоги</span>
+                            </div>
+                            
+                            <div class="place-actions">
+                                <button class="btn-primary" onclick="openCircleDetail('${circle.id}', '${circle.Name}')">
+                                    Записаться
+                                </button>
+                                <button class="btn-secondary" onclick="showCircleDetails('${circle.id}')">
+                                    Подробнее
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="place-price">
+                            <div class="price-from">от</div>
+                            <div class="price-amount">${circle.price.toLocaleString()} ₽</div>
+                            <div class="price-period">в месяц</div>
+                        </div>
+                    </div>
+                `;
+                
                 resultsList.appendChild(card);
             });
         }
@@ -501,11 +661,20 @@
             window.open(`${TALLY_FORM_URL}?circle=${encodeURIComponent(circleName)}`, '_blank');
         }
 
-        // Запуск приложения после загрузки страницы
+        function showCircleDetails(circleId) {
+            alert('Здесь будет страница с подробной информацией о кружке');
+        }
+
+        // Запуск приложения
         document.addEventListener('DOMContentLoaded', async () => {
             ymaps.ready(initMap);
             allCircles = await loadCirclesFromAirtable();
             displayCircles(allCircles);
+        });
+
+        // Поиск при нажатии Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
         });
     </script>
 </body>
