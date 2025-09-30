@@ -591,10 +591,7 @@
             
             displayCircles(filteredCircles);
         }
-// ДЛЯ ДИАГНОСТИКИ - удалите после проверки
-console.log('Загружено кружков:', allCircles.length);
-console.log('Данные из Airtable:', allCircles);
-        // Отображение кружков
+
         function displayCircles(circles) {
             document.getElementById('resultsCount').textContent = circles.length;
             addPlacemarks(circles);
