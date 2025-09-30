@@ -779,6 +779,41 @@
         const nextPageBtn = document.getElementById('nextPage');
         const pageInfo = document.getElementById('pageInfo');
 
+        // Функция для открытия сайта кружка
+        function openWebsite(url, circleName) {
+            if (!url || url.trim() === '') {
+                alert(`У кружка "${circleName}" пока нет сайта`);
+                return;
+            }
+            
+            let websiteUrl = url.trim();
+            
+            // Удаляем возможные пробелы и нормализуем URL
+            websiteUrl = websiteUrl.replace(/\s+/g, '');
+            
+            // Добавляем протокол если его нет
+            if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+                websiteUrl = 'https://' + websiteUrl;
+            }
+            
+            // Проверяем валидность URL
+            try {
+                const validatedUrl = new URL(websiteUrl);
+                
+                // Дополнительная проверка домена
+                if (!validatedUrl.hostname.includes('.')) {
+                    throw new Error('Некорректный домен');
+                }
+                
+                console.log(`Открываем сайт кружка: ${validatedUrl.href}`);
+                window.open(validatedUrl.href, '_blank', 'noopener,noreferrer');
+                
+            } catch (error) {
+                console.error('Некорректный URL:', url, error);
+                alert(`Некорректная ссылка на сайт кружка "${circleName}". Пожалуйста, сообщите организаторам.`);
+            }
+        }
+
         // Показать/скрыть загрузку
         function showLoading() {
             loadingElement.style.display = 'block';
@@ -841,7 +876,9 @@
                         Image: fields.Image || [],
                         IsActive: fields.IsActive !== false,
                         
-                        // Используем реальные цены из Airtable или генерируем демо
+                        // Новое поле для сайта
+                        Website: fields.Website || fields.URL || '',
+                        
                         rating: (fields.rating || Math.random() * 2 + 3),
                         reviews: (fields.reviews || Math.floor(Math.random() * 50) + 5),
                         price: (fields.Price || fields.price || Math.floor(Math.random() * 5000) + 2000)
@@ -869,7 +906,8 @@
                     IsActive: true,
                     rating: 4.5,
                     reviews: 23,
-                    price: 4500
+                    price: 4500,
+                    Website: 'https://robot-school.example.com'
                 },
                 {
                     id: 'test2', 
@@ -883,7 +921,8 @@
                     IsActive: true,
                     rating: 4.8,
                     reviews: 34,
-                    price: 3200
+                    price: 3200,
+                    Website: 'https://dance-gracia.example.ru'
                 }
             ];
         }
@@ -1081,6 +1120,7 @@
                                 <p><strong>Направление:</strong> ${circle.Category || 'Не указано'}</p>
                                 <p><strong>Возраст:</strong> ${circle.AgeMin || '?'}-${circle.AgeMax || '?'} лет</p>
                                 <p><strong>Адрес:</strong> ${circle.Address || 'Не указан'}</p>
+                                ${circle.Website ? `<p><strong>Сайт:</strong> ${circle.Website}</p>` : ''}
                             </div>
                             
                             <div class="place-features">
@@ -1093,9 +1133,14 @@
                                 <button class="btn-primary" onclick="openCircleDetail('${circle.id}', '${circle.Name}')">
                                     Записаться
                                 </button>
-                                <button class="btn-secondary" onclick="showCircleDetails('${circle.id}')">
-                                    Подробнее
-                                </button>
+                                ${circle.Website ? 
+                                    `<button class="btn-secondary" onclick="openWebsite('${circle.Website}', '${circle.Name}')">
+                                        Подробнее
+                                    </button>` :
+                                    `<button class="btn-secondary" onclick="showCircleDetails('${circle.id}')">
+                                        Подробнее
+                                    </button>`
+                                }
                             </div>
                         </div>
                         
