@@ -17,6 +17,7 @@
             --gray-light: #F5F5F5;
             --white: #FFFFFF;
             --orange: #E67E22;
+            --orange-dark: #D35400;
         }
         
         * {
@@ -52,7 +53,7 @@
             align-items: center;
         }
         
-        /* Perfect Logo */
+        /* Updated Logo with Orange Circle */
         .logo {
             display: flex;
             align-items: center;
@@ -68,18 +69,18 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-dark) 100%);
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 12px;
-            box-shadow: 0 4px 12px rgba(52, 224, 161, 0.4);
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
             border: 2px solid var(--white);
             transition: all 0.3s ease;
         }
         
         .logo:hover .logo-circle {
-            box-shadow: 0 6px 20px rgba(0, 168, 112, 0.6);
+            box-shadow: 0 6px 20px rgba(211, 84, 0, 0.6);
             transform: rotate(5deg);
         }
         
@@ -146,6 +147,7 @@
             }
         }
         
+        /* Rest of your existing CSS remains the same */
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--green-light) 0%, #ffffff 100%);
@@ -663,6 +665,7 @@
         </div>
     </header>
 
+    <!-- Rest of your HTML remains exactly the same -->
     <!-- Hero Section -->
     <section class="hero">
         <h1>Найдите лучшие кружки для вашего ребенка</h1>
@@ -754,6 +757,7 @@
         </aside>
     </div>
 
+    <!-- Your existing JavaScript remains exactly the same -->
     <script>
         // Конфигурация
         const AIRTABLE_API_KEY = 'patZudd3eZOcrhroz.b1307f7e37e3d583ff1750c59cc8291bfe3e9a8d2c1531d89350c38cee5a44ad';
@@ -1208,3 +1212,4 @@
     </script>
 </body>
 </html>
+
